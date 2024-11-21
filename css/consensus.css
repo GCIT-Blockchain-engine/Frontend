@@ -1,0 +1,340 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header {
+    background-color: #000;
+    padding: 20px 40px;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    position: fixed;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    width: 89%;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #fff;
+    margin-right: 40px;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    font-size: 18px;
+}
+
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-bar input {
+    width: 100%;
+    margin-left: 50px;
+    margin-right: 70px;
+    background-color: #A6A7AD;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: #000;
+}
+
+/* Hamburger Icon (Hidden on Desktop) */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ---- Footer Section ---- */
+footer {
+    background-color: #000;
+    padding: 40px 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1500px;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    flex: 1;
+    max-width: 487px;
+}
+
+.footer-left h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.footer-left p {
+    margin: 10px 0;
+}
+
+.social-icons {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.social-icons a img {
+    width: 24px;
+    height: 24px;
+    filter: invert(100%);
+}
+
+.footer-left p strong {
+    font-weight: bold;
+}
+
+.footer-right {
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+    flex: 2;
+}
+
+.footer-links h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+    color: #A6A7AD;
+}
+
+/* ---- main section ---- */
+
+main {
+    padding-top: 100px;
+    padding-bottom: 40px;
+    /* max-width: 800px; */
+    margin: auto;
+}
+
+.content {
+    padding: 40px;
+    /* background: radial-gradient(circle, #1b1e3c, #000); */
+    border-radius: 10px;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #fff;
+    text-align: center;
+}
+
+.p1 {
+    width: 50%;
+    margin-left: 5%;
+}
+
+.content p {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.illustration {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.illustration img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+hr {
+    border: 0.5px solid #fff; 
+    width: 100%; 
+    margin: 20px auto; 
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Adjust as necessary */
+    margin-left: 50%;
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    color: white; /* Change the text color as needed */
+    width: 100%;
+}
+
+.overlay-text p {
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /* Center the search bar and move hamburger to the right */
+    .search-bar {
+        justify-content: center;
+        order: 2;
+        flex-grow: 1;
+        display: flex;
+    }
+
+    .left-header h1 {
+        order: 1;
+    }
+
+    /* Hide the navigation menu and show hamburger icon */
+    nav.menu {
+        display: none;
+        flex-direction: column;
+        background-color: #000;
+        position: absolute;
+        top: 60px; /* Adjust to fit below header */
+        right: 0;
+        width: 100%;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: block;
+        order: 3;
+        margin-left: auto;
+    }
+
+    /* Show menu when active class is added */
+    nav.menu.active {
+        display: flex;
+    }
+
+    .menu ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .menu ul li {
+        margin-bottom: 10px;
+    }
+
+    .footer-container {
+        flex-direction: column; /* Stack footer content vertically on small screens */
+        align-items: center;
+    }
+
+    .footer-left, .footer-right {
+        /* width: 100%; */
+        text-align: center;
+    }
+
+    .footer-right {
+        justify-content: center;
+    }
+
+    main {
+        padding: 20px;
+        padding-top: 80px;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .p1 {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .illustration img {
+        max-width: 100%;
+    }
+
+    .image-wrapper {
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .overlay-text {
+        left: 50%;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    .content p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+}

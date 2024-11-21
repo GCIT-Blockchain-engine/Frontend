@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #111;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin-top: 1%;
+}
+
+
+
+/* Main navigation without border */
+.main-nav {
+    padding: 1rem;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+input[type="text"] {
+    padding: 0.5rem;
+    flex-grow: 1;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #222;
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Explorer link with dot underneath */
+.nav-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #0f0;
+    border-radius: 50%;
+    margin-top: 4px; /* Adjust spacing as needed */
+}
+
+
+.balance-section {
+    /* text-align: center; */
+    margin: 2rem 0;
+    margin-left: 10%;
+}
+
+.balance-section h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1%;
+    margin-top: 4%;
+}
+
+.balance-section p {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 4%;
+}
+
+.tabs-section {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #555;
+    margin-bottom: 1rem;
+    /* font-size: 20px; */
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: #aaa;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-bottom: 2px solid transparent; /* Default transparent underline */
+}
+
+.tab.active {
+    color: #fff;
+    border-bottom: 3px solid #fff; /* Bold underline for active tab */
+}
+
+
+.table-container {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-family: 'Source Code Pro', monospace;
+}
+
+
+th {
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+
+tbody tr {
+    height: 40px;
+}
+
+    
+
+/* Styles for the Verify Transaction Section */
+.verify-transaction-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 8%;
+}
+
+.verify-transaction-section h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #fff;
+   
+}
+
+.verify-transaction-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#verifyTransactionBtn{
+    margin-top: 1%;
+    margin-left: 40%;
+}
+.verify-transaction-section input {
+    width: 90%; /* Adjusted to 100px as per your earlier request */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #555; /* Match the border color */
+    border-radius: 5px;
+    background-color: #222; /* Matches the other input fields */
+    color: #fff; /* Matches the text color */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inset shadow */
+    margin-bottom: 15px;
+}
+
+
+.verify-transaction-section p#verify-result {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #333;
+}
+
+.verify-transaction-section p#verify-result.valid {
+    color: #28a745; /* Green for valid result */
+}
+
+.verify-transaction-section p#verify-result.invalid {
+    color: #dc3545; /* Red for invalid result */
+}
+
+.verify-transaction-section button {
+    width: 100px; /* Match input field width */
+    padding: 10px;
+    font-size: 16px;
+    background-color: #555; /* Dark theme */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.verify-transaction-section button:hover {
+    background-color: #777; /* Slightly lighter on hover */
+}

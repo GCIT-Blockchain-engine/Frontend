@@ -1,0 +1,356 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header {
+    background-color: #000;
+    padding: 20px 40px;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    position: fixed;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    width: 89%;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #fff;
+    margin-right: 40px;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    font-size: 18px;
+}
+
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-bar input {
+    width: 100%;
+    margin-left: 50px;
+    margin-right: 70px;
+    background-color: #A6A7AD;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: #000;
+}
+
+/* Hamburger Icon (Hidden on Desktop) */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ---- main component section ---- */
+main {
+    margin-top: 140px;
+    max-width: 1500px;
+    margin-left: 5%;
+    background-image: url('assests/ledger.png'); /* Path to your background image */
+    background-size: 90% 80%; /* Set width and height of the image */
+    background-position: 280% 100%; /* Position the image in the top-center */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    padding: 40px;
+    border-radius: 10px;
+
+}
+
+section h2 {
+    color: #e0e0e0;
+    margin-bottom: 2%;
+}
+
+section ul {
+    list-style: disc;
+    margin-left: 20px;
+    line-height: 1.8;
+    font-size: 1.6rem;
+}
+
+.ledger-overview, .transaction-history, .ledger-summary {
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+.trans {
+    margin-left: 5%;
+}
+.sub {
+    margin-left: 10%;
+}
+
+hr {
+    border: 0.5px solid #fff; 
+    width: 100%; 
+    margin: 20px auto; 
+}
+/* ---- Footer Section ---- */
+footer {
+    background-color: #000;
+    padding: 40px 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1500px;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    flex: 1;
+    max-width: 487px;
+}
+
+.footer-left h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.footer-left p {
+    margin: 10px 0;
+}
+
+.social-icons {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.social-icons a img {
+    width: 24px;
+    height: 24px;
+    filter: invert(100%);
+}
+
+.footer-left p strong {
+    font-weight: bold;
+}
+
+.footer-right {
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+    flex: 2;
+}
+
+.footer-links h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+    color: #A6A7AD;
+}
+
+/* Adjustments for mobile devices */
+@media (max-width: 768px) {
+    /* Reduce padding and font size */
+    header {
+        padding: 15px 20px;
+    }
+
+    /* Make the header title and menu more compact */
+    header h1 {
+        font-size: 20px;
+        margin-right: 20px;
+    }
+
+    .search-bar {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    /* Make the main section responsive */
+    main {
+        margin-top: 80px;
+        padding: 20px;
+        max-width: 95%;
+    }
+
+    section ul {
+        font-size: 1.2rem;
+    }
+
+    /* Stack social icons and footer links vertically */
+    .social-icons {
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .footer-right {
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .footer-links h4 {
+        font-size: 16px;
+    }
+
+    .footer-links ul {
+        padding: 0;
+    }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 18px;
+    }
+
+    header nav ul li a {
+        font-size: 16px;
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 8px;
+        margin-right: 26px;
+    }
+
+    /* Footer adjustments for small screens */
+    .footer-left, .footer-right {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .footer-right {
+        gap: 10px;
+    }
+
+    .footer-links h4 {
+        font-size: 14px;
+    }
+
+    .footer-links ul li a {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /* Center the search bar and move hamburger to the right */
+    .search-bar {
+        justify-content: center;
+        order: 2;
+        flex-grow: 1;
+        display: flex;
+    }
+
+    .left-header h1 {
+        order: 1;
+    }
+
+    /* Hide the navigation menu and show hamburger icon */
+    nav.menu {
+        display: none;
+        flex-direction: column;
+        background-color: #000;
+        position: absolute;
+        top: 60px; /* Adjust to fit below header */
+        right: 0;
+        width: 100%;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: block;
+        order: 3;
+        margin-left: auto;
+    }
+
+    /* Show menu when active class is added */
+    nav.menu.active {
+        display: flex;
+    }
+
+    .menu ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .menu ul li {
+        margin-bottom: 10px;
+    }
+
+    .footer-container {
+        flex-direction: column; /* Stack footer content vertically on small screens */
+        align-items: center;
+    }
+
+    .footer-left, .footer-right {
+        /* width: 100%; */
+        text-align: center;
+    }
+
+    .footer-right {
+        justify-content: center;
+    }
+}

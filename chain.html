@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Blockchain Visualization with D3.js</title>
+    <!-- Load D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        /* Scrollable Container for SVG */
+        #graph-container {
+            width: 100%;
+            height: 100vh;
+            overflow: auto; /* Enable both horizontal and vertical scrolling */
+            border: 1px solid #ccc;
+            background-color: #fff;
+            position: relative;
+        }
+
+        /* SVG Dimensions */
+        svg {
+            width: 5000px; /* Adjust based on the number of chains and blocks */
+            height: 2000px; /* Adjust based on the number of chains and blocks */
+        }
+
+        /* Styling for Each Block */
+        .block {
+            width: 100px;
+            height: 60px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Link (Line) Styling */
+        .link {
+            stroke: #aaa;
+            stroke-width: 2px;
+        }
+
+        /* Node Label Styling */
+        .node-label {
+            font-weight: bold;
+            font-size: 14px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced Blockchain Visualization</h1>
+    <!-- Scrollable Graph Container -->
+    <div id="graph-container">
+        <svg id="graph"></svg>
+    </div>
+
+    <script>
+        /**
+         * Define the blockchain nodes with their respective API endpoints and labels.
+         */
+        const blockchainNodes = [
+            { url: 'http://localhost:5000/chain', nodeId: 1, label: 'Node 1' },
+            { url: 'http://localhost:5001/chain', nodeId: 2, label: 'Node 2' },
+            { url: 'http://localhost:5002/chain', nodeId: 3, label: 'Node 3' }
+        ];
+
+        /**
+         * Assign unique colors to each unique merkle_root hash.
+         * Blocks with the same merkle_root will share the same color.
+         */
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        /**
+         * Fetch blockchain data from a specific node.
+         * @param {Object} node - The blockchain node object containing url, nodeId, and label.
+         * @returns {Promise<Object>} - Returns a promise that resolves to the node's blockchain data.
+         */
+        async function fetchChainData(node) {
+            try {
+                const response = await fetch(node.url);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch from ${node.label}: ${response.statusText}`);
+                }
+                const chainData = await response.json();
+                return { chain: chainData, node };
+            } catch (error) {
+                console.error(error);
+                return { chain: [], node };
+            }
+        }
+
+        /**
+         * Render the blockchain visualization.
+         * @param {Array} data - Array containing blockchain data from multiple nodes.
+         */
+        function renderBlockchain(data) {
+            const svg = d3.select("#graph");
+            svg.selectAll("*").remove(); // Clear previous contents
+
+            // Define spacing parameters
+            const verticalSpacing = 300; // Vertical spacing between chains
+            const horizontalSpacing = 150; // Horizontal spacing between blocks
+
+            // Create a map to store unique merkle_roots for color assignment
+            const merkleRootSet = new Set();
+            data.forEach(nodeData => {
+                nodeData.chain.forEach(block => {
+                    merkleRootSet.add(block.merkle_root);
+                });
+            });
+
+            // Assign colors based on merkle_root
+            const merkleRootColorMap = {};
+            let colorIndex = 0;
+            merkleRootSet.forEach(merkleRoot => {
+                merkleRootColorMap[merkleRoot] = colorScale(colorIndex);
+                colorIndex++;
+            });
+
+            // Iterate over each node's data to draw their respective chains
+            data.forEach((nodeData, index) => {
+                const { chain, node } = nodeData;
+                const color = d3.color(merkleRootColorMap[chain[0]?.merkle_root] || "#000");
+
+                // Positioning for the current chain
+                const yOffset = 100 + index * verticalSpacing;
+
+                // Label each chain
+                svg.append("text")
+                    .attr("x", 100)
+                    .attr("y", yOffset - 20)
+                    .attr("class", "node-label")
+                    .text(node.label);
+
+                // Iterate over each block in the chain
+                chain.forEach((block, blockIndex) => {
+                    const xOffset = 200 + blockIndex * horizontalSpacing;
+
+                    // Draw the block as a rectangle
+                    svg.append("rect")
+                        .attr("class", "block")
+                        .attr("x", xOffset)
+                        .attr("y", yOffset)
+                        .attr("width", 100)
+                        .attr("height", 60)
+                        .attr("rx", 5)
+                        .attr("ry", 5)
+                        .style("fill", merkleRootColorMap[block.merkle_root] || "#000");
+
+                    // Add block index text
+                    svg.append("text")
+                        .attr("x", xOffset + 50) // Center of the block
+                        .attr("y", yOffset + 30) // Vertically centered
+                        .attr("text-anchor", "middle")
+                        .attr("fill", "white")
+                        .text(`Block ${block.index}`);
+
+                    // Draw connecting line from the previous block to the current block
+                    if (blockIndex > 0) {
+                        const previousBlock = chain[blockIndex - 1];
+                        const prevX = 200 + (blockIndex - 1) * horizontalSpacing + 100; // End of previous block
+                        const prevY = yOffset + 30; // Middle of previous block
+                        const currX = xOffset; // Start of current block
+                        const currY = yOffset + 30; // Middle of current block
+
+                        svg.append("line")
+                            .attr("class", "link")
+                            .attr("x1", prevX)
+                            .attr("y1", prevY)
+                            .attr("x2", currX)
+                            .attr("y2", currY)
+                            .attr("stroke", merkleRootColorMap[previousBlock.merkle_root] || "#aaa")
+                            .attr("stroke-width", 2);
+                    }
+
+                    // Optionally, draw a connecting line from the last block to the genesis block
+                    if (blockIndex === 0 && nodeData.chain.length > 1) {
+                        // This handles cases where genesis block might need a different connection logic
+                        // For now, genesis blocks are standing at their initial positions
+                        // Ensure the genesis block is connected within its own chain
+                    }
+                });
+            });
+        }
+
+        /**
+         * Periodically fetch and update blockchain data.
+         * Each node is fetched at staggered intervals to avoid simultaneous API calls.
+         */
+        function startPeriodicFetching() {
+            blockchainNodes.forEach((node, index) => {
+                // Set interval for each node with staggered delay
+                setInterval(() => {
+                    fetchChainData(node).then(result => {
+                        // Fetch all chains and render together
+                        Promise.all(blockchainNodes.map(n => fetchChainData(n)))
+                            .then(allData => renderBlockchain(allData));
+                    });
+                }, 10000 + index * 5000); // Fetch every 10 seconds, staggered by 5 seconds
+            });
+        }
+
+        /**
+         * Initialize the visualization on page load.
+         */
+        window.onload = () => {
+            // Initial fetch with staggered calls
+            Promise.all(blockchainNodes.map((node, index) => 
+                new Promise(resolve => {
+                    setTimeout(() => {
+                        fetchChainData(node).then(result => resolve(result));
+                    }, index * 1000); // Stagger initial calls by 1 second
+                })
+            )).then(allData => {
+                renderBlockchain(allData);
+                startPeriodicFetching(); // Start periodic updates
+            });
+        };
+    </script>
+</body>
+</html>

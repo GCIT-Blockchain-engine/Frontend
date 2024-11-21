@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>doc</title>
+    <link rel="stylesheet" href="./css/doc.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="left-header">
+                <h1><a href="./index.html">EduChain GCIT</a></h1>
+                <nav class="menu">
+                    <ul>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./doc.html">Docs</a></li>
+                        <li><a href="./resources.html">Resources</a></li>
+                        <li><a href="./community.html">Community</a></li>
+                    </ul>
+                </nav>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search" aria-label="Search bar">
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    &#9776;
+                </div>
+            </div>
+            <!-- <div class="search-bar">
+                <input type="text" placeholder="Search" aria-label="Search bar">
+            </div> -->
+        </div>
+    </header>
+
+    <!-- ---- document section ---- -->
+
+    <section class="doc-content">
+        <img src="./img/github.png" alt="">
+        <p>
+            <a href="https://github.com/depay7234/GcitEduchain" target="_blank" rel="noopener noreferrer">
+                https://github.com/depay7234/GcitEduchain
+            </a>
+        </p>
+    </section>
+
+    <hr>
+    
+    <!-- ---- footer section ---- -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <h3>EduChain GCIT</h3>
+                <p>Managed by Gyalpozhing College (GCIT)</p>
+                <div class="social-icons">
+                    <a href="#"><img src="./img/youtube.jpg" alt="YouTube"></a>
+                    <a href="#"><img src="./img/twitter.jpg" alt="Twitter"></a>
+                    <a href="#"><img src="./img/image4.jpg" alt="Discord"></a>
+                    <a href="#"><img src="./img/imag2.jpg" alt="Reddit"></a>
+                    <a href="#"><img src="./img/image3.jpg" alt="GitHub"></a>
+                    <a href="#"><img src="./img/image5.jpg" alt="Telegram"></a>
+                </div>
+                <p>© 2024 <strong>EduChain GCIT.</strong> All rights reserved.</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <h4>EDUCHAIN GCIT</h4>
+                    <ul>
+                        <li><a href="#">Grants</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>GET CONNECTED</h4>
+                    <ul>
+                        <li><a href="#">Ecosystem</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

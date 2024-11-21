@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XRP Account Management</title>
+    <link rel="stylesheet" href="./css/demo.css">
+</head>
+
+<body>
+    <!-- Title Section -->
+    <header class="main-header">
+        <h1>Create a wallet, Send and do Transaction Demo</h1>
+        <p>Manage your standby and operational accounts, send funds, and track transactions.</p>
+    </header>
+
+    <main>
+        <!-- Standby Container -->
+        <div class="container standby" id="container-standby">
+            <div class="header" id="header-standby">
+                <button class="btn" id="create-account-btn-standby">Create Account</button>
+            </div>
+            <h3 id="account-info-title">Account Info</h3>
+            <div class="form-group-2" id="public-key-group-standby">
+                <label for="public-key-input-standby">Public Key</label>
+                <input type="text" readonly value="ED287AB9DF..." id="public-key-input-standby">
+            </div>
+            <div class="form-group" id="private-key-group-standby">
+                <label for="private-key-input-standby">Private Key</label>
+                <input type="text" readonly value="ED5141A4AC..." id="private-key-input-standby">
+            </div>
+            <div class="form-group-2" id="balance-group-standby">
+                <label for="balance-input-standby">Balance</label>
+                <input type="text" readonly value="829.999988" id="balance-input-standby">
+            </div>
+            <div class="box" id="send-box-standby">
+                <h4 id="send-title-standby">Send</h4>
+                <div class="form-group" id="amount-group-standby">
+                    <label for="amount-input-standby">Amount</label>
+                    <input type="text" id="amount-input-standby">
+                </div>
+                <div class="form-group-2" id="destination-account-group-standby">
+                    <label for="destination-account-input-standby">Destination Account</label>
+                    <input type="text" id="destination-account-input-standby">
+                </div>
+                <div class="form-group-3" id="private-key-group-standy">
+                    <label id="private-label-standy">Private key</label>
+                    <input type="text" id="private-key-input-standy">
+                </div>
+                <button class="btn2" id="send-btn-standby">Send &#8594;</button>
+                <textarea class="transaction-log" readonly id="transaction-log-standby"></textarea>
+            </div>
+        </div>
+
+        <!-- Operational Container -->
+        <div class="container operational" id="container-operational">
+            <div class="header" id="header-operational">
+                <button class="btn" id="create-account-btn-operational">Create Account</button>
+            </div>
+            <h3 id="account-info-title-operational">Account Info</h3>
+            <div class="form-group-2" id="public-key-group-operational">
+                <label for="public-key-input-operational">Public Key</label>
+                <input type="text" readonly value="EDADD48A20..." id="public-key-input-operational">
+            </div>
+            <div class="form-group" id="private-key-group-operational">
+                <label for="private-key-input-operational">Private Key</label>
+                <input type="text" readonly value="ED029CC1A4..." id="private-key-input-operational">
+            </div>
+            <div class="form-group-2" id="balance-group-operational">
+                <label for="balance-input-operational">Balance</label>
+                <input type="text" readonly value="1030" id="balance-input-operational">
+            </div>
+            <div class="box" id="send-box-operational">
+                <h4 id="send-title-operational">Send</h4>
+                <div class="form-group" id="amount-group-operational">
+                    <label for="amount-input-operational">Amount</label>
+                    <input type="text" id="amount-input-operational">
+                </div>
+                <div class="form-group-2" id="destination-group-operational">
+                    <label for="destination-input-operational">Destination Account</label>
+                    <input type="text" id="destination-account-input-operational">
+                </div>
+                <div class="form-group-3" id="private-key-group-operational">
+                    <label id="private-label-operational">Private key</label>
+                    <input type="text" id="private-key-input-operational">
+                </div>
+                <button class="btn2" id="send-button-operational">&#8592; Send</button>
+                <textarea class="transaction-log" readonly id="transaction-log-operational"></textarea>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Single base URL
+            const baseUrl = 'http://127.0.0.1:5000';
+
+            // Function to fetch from the single node
+            async function fetchFromNode(endpoint, options = {}) {
+                try {
+                    const response = await fetch(`${baseUrl}/${endpoint}`, options);
+                    if (response.ok) return await response.json();
+                    else throw new Error(`Error ${response.status}: ${response.statusText}`);
+                } catch (error) {
+                    console.error(`Failed to connect to ${baseUrl}:`, error);
+                    throw error;
+                }
+            }
+
+            // Load stored account credentials and balance from API
+            async function loadAccountData(containerType) {
+                const publicKey = localStorage.getItem(`${containerType}-publicKey`);
+                const privateKey = localStorage.getItem(`${containerType}-privateKey`);
+
+                if (publicKey) {
+                    document.getElementById(`public-key-input-${containerType}`).value = publicKey;
+                    try {
+                        // Fetch balance using the public key
+                        const balanceData = await fetchFromNode(`balance/${publicKey}`);
+                        const balance = balanceData.balance;
+                        document.getElementById(`balance-input-${containerType}`).value = balance;
+                        localStorage.setItem(`${containerType}-balance`, balance);
+                    } catch (error) {
+                        console.error("Failed to fetch balance:", error);
+                    }
+                }
+                if (privateKey) {
+                    document.getElementById(`private-key-input-${containerType}`).value = privateKey;
+                }
+            }
+
+            // Load standby and operational account data on page load
+            loadAccountData('standby');
+            loadAccountData('operational');
+
+            // Setting event listeners for both create account buttons
+            const btnStandby = document.getElementById('create-account-btn-standby');
+            const btnOperational = document.getElementById('create-account-btn-operational');
+
+            btnStandby.addEventListener('click', function () {
+                createWallet('standby');
+            });
+
+            btnOperational.addEventListener('click', function () {
+                createWallet('operational');
+            });
+
+            // Function to create wallet
+            async function createWallet(containerType) {
+                try {
+                    const data = await fetchFromNode('wallet/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    document.getElementById(`public-key-input-${containerType}`).value = data.public_key;
+                    document.getElementById(`private-key-input-${containerType}`).value = data.private_key;
+
+                    // Store credentials in localStorage
+                    localStorage.setItem(`${containerType}-publicKey`, data.public_key);
+                    localStorage.setItem(`${containerType}-privateKey`, data.private_key);
+
+                    // Fetch and display balance for the new wallet
+                    loadAccountData(containerType);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error generating wallet credentials');
+                }
+            }
+
+            // Send transaction listeners
+            const sendBtnStandby = document.getElementById('send-btn-standby');
+            const sendBtnOperational = document.getElementById('send-button-operational');
+
+            sendBtnStandby.addEventListener('click', function () {
+                sendTransaction('standby');
+            });
+
+            sendBtnOperational.addEventListener('click', function () {
+                sendTransaction('operational');
+            });
+
+            // Function to send transaction
+            async function sendTransaction(containerType) {
+                const publicKeyInput = document.getElementById(`public-key-input-${containerType}`);
+                const destinationInput = document.getElementById(`destination-account-input-${containerType}`);
+                const amountInput = document.getElementById(`amount-input-${containerType}`);
+                const privateKeyInput = document.getElementById(`private-key-input-${containerType}`);
+                const transactionLog = document.getElementById(`transaction-log-${containerType}`);
+                const balanceInput = document.getElementById(`balance-input-${containerType}`);
+
+                const sender = publicKeyInput.value;
+                const recipient = destinationInput.value;
+                const amount = parseFloat(amountInput.value);
+                const private_key = privateKeyInput.value;
+
+                if (!sender || !recipient || isNaN(amount) || amount <= 0 || !private_key) {
+                    alert('All fields must be filled out correctly to send a transaction.');
+                    return;
+                }
+
+                try {
+                    // Step 1: Send the transaction
+                    let transactionData = await fetchFromNode('transaction/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sender: sender,
+                            recipient: recipient,
+                            amount: amount,
+                            private_key: private_key
+                        })
+                    });
+
+                    transactionLog.value += `\nTransaction successfully sent!\nTransaction details: ${JSON.stringify(transactionData)}`;
+
+                    // Step 2: Mine the transaction
+                    const mineData = await fetchFromNode('mine', {
+                        method: 'GET'
+                    });
+
+                    transactionLog.value += `\nBlock successfully mined!`;
+
+                    // Step 3: Reload the page to update balances
+                    location.reload();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error creating or mining transaction: ' + error.message);
+                    transactionLog.value += `\nError: ${error.message}`;
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduChain GCIT</title>
+    <link rel="stylesheet" href="./css/explorer.css">
+</head>
+
+<body>
+
+    <!-- Main navigation -->
+    <header class="main-nav">
+        <div class="nav">
+            <h1>EduChain GCIT</h1>
+            <input type="text" id="public-address" placeholder="Search by Address">
+            <div class="nav-links">
+                <a href="#">Explorer <span class="online-dot"></span></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="balance-table-section">
+            <section class="balance-section">
+                <h2>GCIT Coin</h2>
+                <!-- <p>Balance: 100</p> -->
+                <p id="balanceDisplay">Balance: <span id="balanceValue"></span> GCIT</p>
+            </section>
+
+            <section class="tabs-section">
+                <div class="tabs">
+                    <button id="transactionTab" class="tab active"
+                        onclick="setActiveTab('transactionTab')">Transaction</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Transaction Id</th>
+                                <th scope="col">Sender Address</th>
+                                <th scope="col">Receiver Address</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Signature</th>
+                                <th scope="col">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-container">
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+            <section class="verify-transaction-section" style="align-items: center;">
+                <h2>Verify Transaction</h2>
+                <form id="verifyTransactionForm">
+                    <div class="form-group">
+                        <input type="text" id="verify-sender" placeholder="Sender Address" required>
+                        <input type="text" id="verify-recipient" placeholder="Recipient Address" required>
+                        <input type="number" id="verify-amount" placeholder="Amount" required>
+                        <input type="text" id="verify-signature" placeholder="Signature" required>
+                    </div>
+                </form>
+                <button type="button" id="verifyTransactionBtn">Verify</button>
+
+                <p id="verify-result">Awaiting input...</p>
+            </section>            
+            
+
+        </div>
+    </main>
+
+</body>
+<script>
+     const baseUrl = 'http://127.0.0.1:5000';
+
+// Function to fetch transactions by public address or transaction ID
+async function fetchTransactions(searchQuery) {
+    if (!searchQuery) {
+        alert('Please enter a public address or transaction ID.');
+        return;
+    }
+
+    try {
+        const transactionContainer = document.getElementById('transaction-container');
+        transactionContainer.innerHTML = ''; // Clear the table before populating new data
+
+        // Try fetching by transaction ID
+        const transactionResponse = await fetch(`${baseUrl}/transaction/${searchQuery}`);
+        if (transactionResponse.ok) {
+            const transactionData = await transactionResponse.json();
+            displayTransactionById(transactionData); // Display single transaction
+            return;
+        }
+
+        // If transaction ID fetch fails, fetch by public address
+        console.warn("Transaction ID not found, falling back to public address.");
+
+        // Fetch balance
+        const balanceResponse = await fetch(`${baseUrl}/balance/${searchQuery}`);
+        if (balanceResponse.ok) {
+            const balanceData = await balanceResponse.json();
+            document.getElementById('balanceValue').textContent = balanceData.balance;
+        } else {
+            console.error("Failed to fetch balance:", balanceResponse.status);
+            alert("Failed to fetch balance. Status: " + balanceResponse.status);
+        }
+
+        // Fetch transactions
+        const transactionsResponse = await fetch(`${baseUrl}/transactions/${searchQuery}`);
+        if (transactionsResponse.ok) {
+            const transactionsData = await transactionsResponse.json();
+            displayTransactions(transactionsData.transactions); // Display multiple transactions
+        } else {
+            console.error("Failed to fetch transactions:", transactionsResponse.status);
+            alert("Failed to fetch transactions. Status: " + transactionsResponse.status);
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data: " + error);
+    }
+}
+
+function displayTransactionById(transaction) {
+    const transactionContainer = document.getElementById('transaction-container');
+
+    if (!transaction) {
+        transactionContainer.innerHTML = `
+        <tr>
+            <td colspan="6" style="text-align: center;">No transaction found for this ID.</td>
+        </tr>
+    `;
+        return;
+    }
+
+    const row = `
+    <tr>
+        <td>${transaction.transaction_id}</td>
+        <td>${transaction.sender}</td>
+        <td>${transaction.recipient}</td>
+        <td>${transaction.amount}</td>
+        <td>${transaction.signature}</td>
+        <td>${new Date(transaction.timestamp * 1000).toLocaleString()}</td>
+    </tr>
+`;
+    transactionContainer.innerHTML = row;
+}
+
+function displayTransactions(transactions) {
+    const transactionContainer = document.getElementById('transaction-container');
+
+    if (transactions.length === 0) {
+        transactionContainer.innerHTML = `
+        <tr>
+            <td colspan="6" style="text-align: center;">No transactions found for this address.</td>
+        </tr>
+    `;
+        return;
+    }
+
+    const rows = transactions.map(transaction => `
+    <tr>
+        <td>${transaction.transaction_id}</td>
+        <td>${transaction.sender}</td>
+        <td>${transaction.recipient}</td>
+        <td>${transaction.amount}</td>
+        <td>${transaction.signature}</td>
+        <td>${new Date(transaction.timestamp * 1000).toLocaleString()}</td>
+    </tr>
+`).join('');
+    transactionContainer.innerHTML = rows;
+}
+
+document.getElementById('public-address').addEventListener('input', function (event) {
+    const searchQuery = event.target.value.trim();
+    fetchTransactions(searchQuery);
+});
+
+
+
+// Function to verify a transaction signature
+async function verifyTransaction(sender, recipient, amount, signature) {
+    try {
+        // Send a POST request to the backend
+        const response = await fetch(`${baseUrl}/transaction/verify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sender: sender,
+                recipient: recipient,
+                amount: amount,
+                signature: signature,
+            }),
+        });
+
+        // Check the response
+        if (response.ok) {
+            const result = await response.json();
+            return result.is_valid; // Return the validity of the transaction
+        } else {
+            const errorData = await response.json();
+            console.error('Verification error:', errorData.error);
+            return false;
+        }
+    } catch (error) {
+        console.error('Unexpected error during verification:', error);
+        return false;
+    }
+}
+
+// Event listener for the Verify button
+document.getElementById('verifyTransactionBtn').addEventListener('click', async function () {
+    // Get the input values
+    const sender = document.getElementById('verify-sender').value.trim();
+    const recipient = document.getElementById('verify-recipient').value.trim();
+    const amount = document.getElementById('verify-amount').value.trim();
+    const signature = document.getElementById('verify-signature').value.trim();
+    const resultElement = document.getElementById('verify-result');
+
+    // Validate inputs
+    if (!sender || !recipient || !amount || !signature) {
+        resultElement.textContent = 'All fields are required.';
+        resultElement.style.color = 'red';
+        return;
+    }
+
+    // Call the verifyTransaction function
+    const isValid = await verifyTransaction(sender, recipient, amount, signature);
+
+    // Update the result text dynamically
+    resultElement.textContent = isValid
+        ? 'Transaction signature is valid.'
+        : 'Transaction signature is invalid.';
+    resultElement.style.color = isValid ? 'green' : 'red'; // Update text color based on result
+});
+</script>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resources</title>
+    <link rel="stylesheet" href="./css/resources.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="left-header">
+                <h1><a href="./index.html">EduChain GCIT</a></h1>
+                <nav class="menu">
+                    <ul>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./doc.html">Docs</a></li>
+                        <li><a href="./resources.html">Resources</a></li>
+                        <li><a href="./community.html">Community</a></li>
+                    </ul>
+                </nav>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search" aria-label="Search bar">
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    &#9776;
+                </div>
+            </div>
+            <!-- <div class="search-bar">
+                <input type="text" placeholder="Search" aria-label="Search bar">
+            </div> -->
+        </div>
+    </header>
+
+    <!-- ---- main section ---- -->
+    <main>
+        <aside>
+            <ul>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <span class="arrow"></span> Resources
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="./chain.html">Chain</a></li>
+                        <li><a href="./explorer.html">Explorer</a></li>
+                        <li><a href="./demo.html">Demo</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <section class="content">
+            <h1>EduChain GCIT Faucets</h1>
+            <p>These parallel EduChain Ledger test networks provide platforms for testing <br>
+                changes to the EduChain Ledger and software built on, without using real funds.</p>
+            <p>These funds are intended for testing only. Test network's ledger history and <br>
+                balances are reset as necessary.</p>
+            <p>All balances and EduChain on these networks are separate from Mainnet. <br>
+                As a precaution, do not use the Testnet on the Mainnet.</p>
+
+            <div class="testnet">
+                <h2>Testnet Servers</h2>
+                <button id="generate-btn">
+                    Generate credentials <img class="image" src="img/arrow-right.png">
+                </button>
+
+                <!-- Hidden credentials details section -->
+                <div id="credentials-details" style="display: none;">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <hr>
+
+    <!-- ---- footer section ---- -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <h3>EduChain GCIT</h3>
+                <p>Managed by Gyalpozhing College (GCIT)</p>
+                <div class="social-icons">
+                    <a href="#"><img src="./img/youtube.jpg" alt="YouTube"></a>
+                    <a href="#"><img src="./img/twitter.jpg" alt="Twitter"></a>
+                    <a href="#"><img src="./img/image4.jpg" alt="Discord"></a>
+                    <a href="#"><img src="./img/imag2.jpg" alt="Reddit"></a>
+                    <a href="#"><img src="./img/image3.jpg" alt="GitHub"></a>
+                    <a href="#"><img src="./img/image5.jpg" alt="Telegram"></a>
+                </div>
+                <p>© 2024 <strong>EduChain GCIT.</strong> All rights reserved.</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <h4>EDUCHAIN GCIT</h4>
+                    <ul>
+                        <li><a href="#">Grants</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>GET CONNECTED</h4>
+                    <ul>
+                        <li><a href="#">Ecosystem</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const baseUrls = [
+            'http://127.0.0.1:5000',
+            'http://127.0.0.1:5001',
+            'http://127.0.0.1:5002'
+        ];
+    
+        async function fetchFromAvailableNode(endpoint, options = {}) {
+            for (let url of baseUrls) {
+                try {
+                    const response = await fetch(`${url}/${endpoint}`, options);
+                    if (response.ok) return await response.json();
+                } catch (error) {
+                    console.warn(`Failed to connect to ${url}:`, error);
+                }
+            }
+            throw new Error("All nodes are unavailable.");
+        }
+    
+        const generateBtn = document.getElementById('generate-btn');
+        const credentialsDetails = document.getElementById('credentials-details');
+    
+        generateBtn.addEventListener('click', async function () {
+            try {
+                const data = await fetchFromAvailableNode('wallet/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
+                console.log(data)
+    
+    
+    
+                credentialsDetails.innerHTML = `
+                    <div class="credential-box">
+                        <p><strong>Public Key</strong></p>
+                        <p>${data.public_key}</p>
+                    </div>
+                    <div class="credential-box">
+                        <p><strong>Private Key</strong></p>
+                        <p>${data.private_key}</p>
+                    </div>
+                    <div class="credential-box">
+                        <p><strong>Balance</strong></p>
+                        <p> 10 GCIT COIN</p>
+                    </div>
+                `;
+                credentialsDetails.style.display = 'block';
+    
+            } catch (error) {
+                console.error(error);
+                alert('Error generating wallet credentials');
+            }
+        });
+    
+        // Toggle dropdown menus
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                this.classList.toggle('active');
+                const dropdownMenu = this.nextElementSibling;
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+
+</html>

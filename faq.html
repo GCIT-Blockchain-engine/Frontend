@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>faq</title>
+    <link rel="stylesheet" href="./css/faq.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="left-header">
+                <h1><a href="./index.html">EduChain GCIT</a></h1>
+                <nav class="menu">
+                    <ul>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./doc.html">Docs</a></li>
+                        <li><a href="./resources.html">Resources</a></li>
+                        <li><a href="./community.html">Community</a></li>
+                    </ul>
+                </nav>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search" aria-label="Search bar">
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    &#9776;
+                </div>
+            </div>
+            <!-- <div class="search-bar">
+                <input type="text" placeholder="Search" aria-label="Search bar">
+            </div> -->
+        </div>
+    </header>
+
+    <!-- ---- main content section ---- -->
+    <section class="main-content">
+        <!-- Message Input Section -->
+        <!-- <div class="message-input"> -->
+        <h3>FAQ</h3>
+        <div class="message-box">
+            <textarea placeholder="What's on Your Mind? Ask Us Anything!"></textarea>
+            <button>Send <span>➤</span></button>
+        </div>
+        <!-- </div> -->
+
+        <!-- FAQ Section -->
+        <div class="faq-container">
+            <div class="faq-header">
+                <h2>Answers to Your EduChain GCIT Questions</h2>
+            </div>
+            <div class="faq-item">
+                <h3>Is EduChain a private blockchain, owned by GCIT?</h3>
+                <p>No, the EduChain Ledger is a decentralized, public blockchain. Any changes that would impact
+                    transaction processing or consensus need to be approved by at least 80% of the network. GCIT is a
+                    contributor to the network, but its rights are
+                    the same as those of other contributors. In terms of validation, there are 150+ validators on the
+                    network with 35+ on the default Unique Node List.
+                    GCIT runs only_1 of these nodes.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Isn't Proof of Work the best validation mechanism?</h3>
+                <p>Proof of Work (PoW) was the first mechanism to solve the double spend problem without requiring a
+                    trusted 3rd party. The EduChain Ledger’s
+                    consensus mechanism solves the same problem in a far faster, cheaper and more energy efficient way.
+                </p>
+            </div>
+            <div class="faq-item">
+                <h3>What happens if more than 20% of nodes within the network do not agree with the majority? How is the
+                    final version of the ledger chosen?</h3>
+                <p>Normally, if there is a dispute about the validity of one transaction, that transaction gets pushed
+                    back until the majority can come to an agreement. But if more than 20% of the network did not follow
+                    the same protocol rules as the majority, the network would temporarily halt. It could resume when
+                    participants reconfigure their UNLs based on those who want to reach consensus with each other. This
+                    temporary processing delay is desired rather than double spending.
+
+                    In the process of determining the authoritative version of a ledger, there may be multiple temporary
+                    internal versions. Such internal versions naturally happen in distributed systems because not all
+                    nodes receive transactions in the same order. The analogous behavior in Bitcoin is where two servers
+                    each see a different longest chain because two blocks were mined at about the same time.
+                    However, there can be only one latest validated ledger version at any given time; other versions are
+                    irrelevant and harmless.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can financial institutions set up transaction validators to help them meet specific institutional
+                    standards and requirements?</h3>
+                <p>No, institutions cannot set up customized validator policies for choosing to allow some transactions
+                    and reject others. Validators either follow the protocol, or they do not. If software does not
+                    follow protocol rules, it does not function. Thus, it is not recommended that institutions seek out
+                    custom implementations without in-house expertise.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Isn’t Proof of Work the best validation mechanism?</h3>
+                <p>Proof of Work (PoW) was the first mechanism to solve the double spend problem without requiring a
+                    trusted 3rd party. The EduChain Ledger’s
+                    consensus mechanism solves the same problem in a far faster, cheaper and more energy efficient way.
+                </p>
+            </div>
+            <div class="faq-item">
+                <h3>Is EduChain a private blockchain, owned by GCIT?</h3>
+                <p>No, the EduChain Ledger is a decentralized, public blockchain. Any changes that would impact
+                    transaction processing or consensus need to be
+                    approved by at least 80% of the network. GCIT is a contributor to the network, but its rights are
+                    the same as those of other contributors. In terms
+                    of validation, there are 150+ validators on the network with 35+ on the default Unique Node List.
+                    GCIT runs only_1 of these nodes.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What happens if more than 20% of nodes within the network do not agree with the majority? How is the
+                    final version of the ledger chosen?</h3>
+                <p>Normally, if there is a dispute about the validity of one transaction, that transaction gets pushed
+                    back until the majority can come to an agreement. But if more than 20% of the network did not follow
+                    the same protocol rules as the majority, the network would temporarily halt. It could resume when
+                    participants reconfigure their UNLs based on those who want to reach consensus with each other. This
+                    temporary processing delay is desired rather than double spending.
+
+                    In the process of determining the authoritative version of a ledger, there may be multiple temporary
+                    internal versions. Such internal versions naturally happen in distributed systems because not all
+                    nodes receive transactions in the same order. The analogous behavior in Bitcoin is where two servers
+                    each see a different longest chain because two blocks were mined at about the same time.
+                    However, there can be only one latest validated ledger version at any given time; other versions are
+                    irrelevant and harmless.</p>
+            </div>
+        </div>
+    </section>
+    
+    <hr>
+
+    <!-- ---- footer section ---- -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <h3>EduChain GCIT</h3>
+                <p>Managed by Gyalpozhing College (GCIT)</p>
+                <div class="social-icons">
+                    <a href="#"><img src="./img/youtube.jpg" alt="YouTube"></a>
+                    <a href="#"><img src="./img/twitter.jpg" alt="Twitter"></a>
+                    <a href="#"><img src="./img/image4.jpg" alt="Discord"></a>
+                    <a href="#"><img src="./img/imag2.jpg" alt="Reddit"></a>
+                    <a href="#"><img src="./img/image3.jpg" alt="GitHub"></a>
+                    <a href="#"><img src="./img/image5.jpg" alt="Telegram"></a>
+                </div>
+                <p>© 2024 <strong>EduChain GCIT.</strong> All rights reserved.</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <h4>EDUCHAIN GCIT</h4>
+                    <ul>
+                        <li><a href="#">Grants</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>GET CONNECTED</h4>
+                    <ul>
+                        <li><a href="#">Ecosystem</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
